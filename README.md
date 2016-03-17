@@ -1,4 +1,4 @@
-# booked-lmu
+# bookedscheduler-deploy-example
 
 ```
 # start dev VM
