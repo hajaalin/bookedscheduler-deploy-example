@@ -1,0 +1,6 @@
+---
+  use_shibboleth: true
+  booked_allow_self_registration: "false"
+  booked_disable_password_reset: "true"
+  booked_plugin_authentication: "Shibboleth"
+  booked_logout_url: "https://login.helsinki.fi/idp/logout.jsp?return=https://{{ apache_server_name }}/Shibboleth.sso/Logout"

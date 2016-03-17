@@ -1,0 +1,25 @@
+---
+apache_user: apache
+apache_packages:
+ - httpd
+ - mod_ssl
+ - openssh
+apache_conf_path: /etc/httpd/conf.d
+
+mysql_packages:
+  - mariadb
+  - mariadb-server
+#  - mariadb-libs
+# - http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm
+# - mysql
+# - mysql-server
+
+mysql_daemon: mariadb
+mysql_log_error: /var/log/mariadb/mariadb.log
+mysql_syslog_tag: mariadb
+mysql_pid_file: /var/run/mariadb/mariadb.pid
+
+php_packages:
+ - php
+ - php-mysql
+# - php-mcrypt

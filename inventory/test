@@ -1,0 +1,5 @@
+[booked_hosts]
+your.test.server.here
+
+[test:children]
+booked_hosts

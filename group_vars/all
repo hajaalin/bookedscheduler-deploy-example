@@ -1,0 +1,38 @@
+---
+  booked_db_name: bookedscheduler
+  booked_db_user: booked_user
+
+  # Default settings without Shibboleth.
+  # Override by adding host to group "shibboleth".
+  use_shibboleth: false
+  booked_allow_self_registration: "true"
+  booked_plugin_authentication: ""
+  booked_logout_url: ""
+
+  # use ssl config template (overridden in dev)
+  apache_create_vhosts: false
+  apache_vhosts_filename: "ssl.conf"
+
+  # Default settings without elomake.
+  # Override by adding host to group "elomake".
+  install_elomake_script: false
+
+  # Install NXLog?
+  install_nxlog: false
+  
+  # If yes, specify where to send logs (see templates/nxlog.conf)
+  #install_nxlog: true
+  #graylog_server: ""
+  #graylog_port: ""
+
+  # Enable SELinux?
+  selinux_enabled: true
+
+  # Install MySQL by default
+  install_mysql: true
+
+  # Install ssl-setup role by default
+  install_ssl_setup_role: true
+
+  # Default Apache server name
+  apache_server_name: "{{ inventory_hostname }}"

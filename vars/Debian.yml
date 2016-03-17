@@ -1,0 +1,7 @@
+apache_user: www-data
+apache_packages:
+ - libapache2-mod-php5
+
+php_packages:
+ - php5-mysql
+ - php5-mcrypt

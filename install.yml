@@ -1,0 +1,102 @@
+- hosts: booked_hosts
+  sudo: yes
+  vars_files:
+  - vars/main.yml
+  - "vars/{{ ansible_os_family }}.yml"
+
+  vars:
+  - mysql_root_password_update: true
+
+  pre_tasks:
+    - debug: var=install_mysql
+    - debug: var=install_ssl_setup_role
+
+  roles:
+  - { role: ssl-setup, when: install_ssl_setup_role, tags: ssl }
+  - { role: geerlingguy.apache, tags: ssl }
+  - { role: geerlingguy.mysql, when: install_mysql }
+  - geerlingguy.php
+  - { role: bookedscheduler, tags: booked }
+
+  tasks:
+  - name: install libselinux
+    yum: name=libselinux state=present
+  - name: make sure mysql client is installed (needed for init script)
+    yum: name=mysql state=present
+
+  - block:
+    - name: enable selinux
+      selinux: state=enforcing policy=targeted
+    - name: allow Apache to connect to MySQL
+      command: setsebool -P httpd_can_network_connect_db 1
+    - name: allow Apache to compile template files
+      command: chcon -R -t httpd_sys_rw_content_t {{ booked_install_dir }}/tpl_c/
+    - name: allow Apache to write Booked log files
+      command: chcon -R -t httpd_sys_rw_content_t {{ booked_log_dir }}
+    - name: allow Apache to write Booked configuration file
+      command: chcon -R -t httpd_sys_rw_content_t {{ booked_install_dir }}/config/config.php
+    when: selinux_enabled
+    tags:
+      - selinux
+      - booked
+
+  - name: disable selinux
+    selinux: state=disabled
+    when: not selinux_enabled
+
+  - name: set /etc/localtime
+    file: src=/usr/share/zoneinfo/{{ booked_default_timezone }} dest=/etc/localtime state=link
+
+  - name: template Apache configuration
+    template:
+      src: "templates/ssl.conf"
+      dest: "{{ apache_conf_path }}/{{ apache_vhosts_filename }}"
+      owner: root
+      group: root
+      mode: 0644
+      backup: yes
+    notify: restart apache
+    tags: ssl
+  - name: redirect HTTP to HTTPS
+    template: src=templates/redirect.conf dest="{{ apache_conf_path }}/redirect.conf"
+    notify:
+      - restart apache
+    tags: ssl
+
+  - name: create init directory
+    file: path="{{ booked_install_dir }}/init" state=directory owner="{{ apache_user }}" group="{{ apache_user }}"
+  - name: copy init script
+    copy: src=init/init.php dest="{{ booked_install_dir }}/init/init.php" owner="{{ apache_user }}" group="{{ apache_user }}"
+  - name: run init script
+    shell: "sudo -u {{ apache_user }} php init/init.php > {{ booked_log_dir }}/init.log"
+    args:
+      chdir: "{{ booked_install_dir }}"
+      creates: "{{ booked_log_dir }}/init.log"
+    tags: booked
+
+  # - name: create link from view-schedule.php to index.php
+  #   file: path=/var/www/html/Web/index.php src=/var/www/html/Web/view-schedule.php state=link force=yes
+  #   tags: booked
+
+
+  # NXLog setup
+  - block:
+    - name: install nxlog rpm
+      yum: name={{ nxlog_rpm_url }} state=present
+    - name: template nxlog config
+      template: src=templates/nxlog.conf dest=/etc/nxlog.conf backup=yes
+      notify: restart nxlog
+    - name: enable and start nxlog
+      service: name=nxlog enabled=yes state=started
+    when: install_nxlog
+    tags:
+      - nxlog
+
+  - name: trigger apache restart (use handler in apache role)
+    debug: msg="restart apache"
+    notify: restart apache
+    changed_when: true
+
+  handlers:
+    - name: restart nxlog
+      service: name=nxlog state=restarted

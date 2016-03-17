@@ -1,0 +1,8 @@
+---
+  # secrets from vault.yml
+  mysql_root_password: "{{ vault_mysql_root_password }}"
+  booked_db_password: "{{ vault_booked_db_password }}"
+
+  booked_source: "git"
+  booked_source_git_repo: "https://github.com/UH-LMU/bookedscheduler.git"
+  booked_source_git_version: "test"

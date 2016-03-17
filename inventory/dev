@@ -1,0 +1,5 @@
+[booked_hosts]
+192.168.39.11
+
+[dev:children]
+booked_hosts

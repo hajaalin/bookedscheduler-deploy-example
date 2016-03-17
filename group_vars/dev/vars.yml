@@ -1,0 +1,36 @@
+---
+  # secrets from vault.yml
+  mysql_root_password: "{{ vault_mysql_root_password }}"
+  booked_db_password: "{{ vault_booked_db_password }}"
+
+  #
+  # Apache2
+  #
+  apache_create_vhosts: false
+  apache_vhosts_filename: "ssl.conf"
+  apache_remove_default_vhost: false
+
+  # virtual host to redirect HTTP to HTTPS
+  apache_vhosts:
+    - servername: "{{ inventory_hostname }}"
+      documentroot: "/var/www/html"
+      extra_parameters: |
+        Redirect permanent / https://{{ inventory_hostname }}
+
+  apache_vhosts_ssl:
+    - {
+      servername: "{{ inventory_hostname }}",
+      documentroot: "/var/www/html",
+      certificate_file: "{{ ssl_certificate_file }}",
+      certificate_key_file: "{{ ssl_certificate_key_file }}",
+      certificate_chain_file: "{{ ssl_certificate_chain_file }}"
+    }
+
+  # use the default zip archive
+  booked_source: "local_archive"
+
+  # read Booked from a local directory
+  # booked_source: "local_directory"
+  # booked_source_local_dir: "/home/hajaalin/GitHub/bookedscheduler/"
+
+  selinux_enabled: false

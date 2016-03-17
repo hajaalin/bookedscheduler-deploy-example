@@ -1,0 +1,92 @@
+---
+build_docker_image: false
+
+timezone: 'Europe/Helsinki'
+
+
+# SSL
+ssl_certificate_subject: "/C=FI/ST=Uusimaa/L=Helsinki/O=University of Helsinki/OU=Light Microscopy Unit/CN={{ apache_server_name }}"
+
+#
+# Apache2
+#
+apache_mods_enabled:
+ - mpm_prefork.load
+ - rewrite.load
+ - ssl.load
+
+apache_mods_disabled:
+ - mpm_event.load
+
+# apache state at the end of apache role tasks
+apache_state: started
+
+# apache_packages is defined in Debian.yml and RedHat.yml
+
+
+#
+# MySQL / MariaDB
+#
+mysql_log: /var/log/mysql/mysql.log
+mysql_log_error: /var/log/mysql/err.log
+mysql_syslog_tag: mysqld
+
+mysql_databases:
+ - name: "{{ booked_db_name }}"
+   encoding: utf8
+   collation: utf8_general_ci
+mysql_users:
+ - name: "{{ booked_db_user }}"
+   host: "%"
+   password: "{{ booked_db_password }}"
+   priv: "{{ booked_db_name }}.*:ALL"
+
+
+#
+# PHP: php_packages is defined in Debian.yml and RedHat.yml
+#
+php_date_timezone: "{{ timezone }}"
+
+
+#
+# Booked settings
+#
+
+booked_apache_user: "{{ apache_user }}"
+booked_app_title: "LMU Scheduler"
+booked_admin_email: "lmu-staff@helsinki.fi"
+booked_admin_email_name: "LMU Scheduler"
+booked_default_timezone: "{{ timezone }}"
+booked_default_language: "en_gb"
+booked_script_url: "https://{{ apache_server_name }}/Web"
+booked_registration_captcha_enabled: "false"
+booked_inactivity_timeout: "120"
+booked_name_format: "{last}"
+booked_schedule_show_inaccessible_resources: "true"
+booked_privacy_view_schedules: "true"
+booked_privacy_view_reservations: "true"
+booked_privacy_hide_user_details: "false"
+booked_privacy_hide_reservation_details: "false"
+booked_reservation_start_time_constraint: "current"
+booked_reservation_prevent_participation: "true"
+booked_reservation_prevent_recurrence: "true"
+booked_plugin_prereservation: "LMUPolicy"
+booked_plugin_postreservation: "LMUPostReservation"
+
+booked_ics_require_login: "true"
+booked_ics_subscription_key: "lmucalendars"
+booked_ics_import: "false"
+booked_ics_import_key: ""
+
+booked_log_dir: "/var/log/booked/"
+booked_log_level_app: "INFO"
+booked_log_level_sql: "ERROR"
+
+booked_reservation_labels_ics_summary: "{name}"
+booked_reservation_labels_ics_my_summary: "{name}"
+booked_reservation_labels_reservation_popup: "{name} {dates} {title} {resources} {description} {attributes}"
+
+#
+# NXLog
+#
+nxlog_rpm_url: 'http://nxlog.org/system/files/products/files/1/nxlog-ce-2.9.1504-1_rhel7.x86_64.rpm'
