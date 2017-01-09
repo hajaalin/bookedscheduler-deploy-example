@@ -1,0 +1,25 @@
+- hosts: booked_hosts
+  sudo: yes
+  vars_files:
+  - vars/main.yml
+
+  vars:
+  - known_hosts_git_file: "/root/.ssh/known_hosts_git"
+
+  tasks:
+  - name: check if known_hosts_git exists
+    stat: path="{{ known_hosts_git_file }}"
+    register: known_hosts_git
+  # https://gist.github.com/maxim/871e611d4bc02c633c67
+  - name: ensure github.com is a known host
+    lineinfile:
+      dest: "{{ known_hosts_git_file }}"
+      create: yes
+      state: present
+      line: "{{ lookup('pipe', 'ssh-keyscan -t rsa github.com') }}"
+      regexp: "^github\\.com"
+    when: not known_hosts_git.stat.exists
+  - name: set permissions on /root/.ssh/
+    file: path=/root/.ssh mode=0700
+  - name: set permissions on known_hosts_git
+    file: path="{{ known_hosts_git_file }}" mode=0600
