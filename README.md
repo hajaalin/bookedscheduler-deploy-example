@@ -30,7 +30,7 @@ $ cat inventory/group_vars/dev/vault.yml
   booked_db_password: "another_secret_here"
   booked_install_password: "and_another_one_here"
 ```
-Then encrypt the `vault.yml` file.
+Then encrypt the `vault.yml` files.
 ```
 ansible-vault encrypt --vault-password-file=~/.ansible_vault_passes/bookedscheduler-deploy-example group_vars/dev/vault.yml
 ansible-vault encrypt --vault-password-file=~/.ansible_vault_passes/bookedscheduler-deploy-example group_vars/test/vault.yml
@@ -43,7 +43,7 @@ Start test VM and install
 vagrant up
 
 # get versioned roles
-./get_roles.sh
+ansible-galaxy install -f -r requirements.yml -p ./roles
 
 # install on dev VM
 ansible-playbook --vault-password-file=~/.ansible_vault_passes/bookedscheduler-deploy-example -i inventory/dev install.yml
