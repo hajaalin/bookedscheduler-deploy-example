@@ -67,6 +67,8 @@ vagrant up
 
 # install on dev VM
 ansible-playbook --vault-password-file=~/.ansible_vault_passes/bookedscheduler-deploy-example -i inventory/dev install.yml
+
+# browse to the address specified in Vagrantfile, e.g. https://192.168.39.11
 ```
 Install on test server
 ----------------------
