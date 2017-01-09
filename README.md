@@ -4,6 +4,18 @@ This project shows how to install [Booked] (https://www.bookedscheduler.com) wit
  (see also https://github.com/hajaalin/ansible-role-bookedscheduler).
 The way to set up a test VM with Vagrant is copied from http://hakunin.com/six-ansible-practices.
 
+Prerequisites
+-------------
+- [Ansible](https://www.ansible.com/)
+- [Vagrant](https://www.vagrantup.com/)
+
+Download roles
+--------------
+```
+ansible-galaxy install -f -r requirements.yml -p ./roles
+
+```
+
 Managing secrets
 ----------------
 
@@ -43,9 +55,6 @@ Start test VM and install
 ```
 # start dev VM
 vagrant up
-
-# get versioned roles
-ansible-galaxy install -f -r requirements.yml -p ./roles
 
 # install on dev VM
 ansible-playbook --vault-password-file=~/.ansible_vault_passes/bookedscheduler-deploy-example -i inventory/dev install.yml
