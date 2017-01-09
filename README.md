@@ -13,7 +13,6 @@ Download roles
 --------------
 ```
 ansible-galaxy install -f -r requirements.yml -p ./roles
-
 ```
 
 Managing secrets
@@ -25,7 +24,7 @@ Create new vault password file. If you don't have openssl installed, see [altern
 ```
 mkdir ~/.ansible_vault_passes
 openssl rand -base64 32 > ~/.ansible_vault_passes/bookedscheduler-deploy-example
-chmod 0400 /home/hajaalin/GitHub/bookedscheduler-deploy-example/README.md
+chmod 0400 ~/.ansible_vault_passes/bookedscheduler-deploy-example
 ```
 Best practice is to have `vars.yml` and `vault.yml` files in each subdirectory of group_vars.
 Edit `vault.yml` to define the actual secret variables. Use prefix `vault_`.
