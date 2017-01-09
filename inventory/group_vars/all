@@ -13,13 +13,9 @@
   apache_create_vhosts: false
   apache_vhosts_filename: "ssl.conf"
 
-  # Default settings without elomake.
-  # Override by adding host to group "elomake".
-  install_elomake_script: false
-
   # Install NXLog?
   install_nxlog: false
-  
+
   # If yes, specify where to send logs (see templates/nxlog.conf)
   #install_nxlog: true
   #graylog_server: ""
@@ -30,9 +26,6 @@
 
   # Install MySQL by default
   install_mysql: true
-
-  # Install ssl-setup role by default
-  install_ssl_setup_role: true
 
   # Default Apache server name
   apache_server_name: "{{ inventory_hostname }}"

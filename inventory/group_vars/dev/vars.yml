@@ -33,6 +33,5 @@
   #booked_source: "local_directory"
   #booked_source_local_dir: "/home/hajaalin/Software/Booked/2.6.3/booked/"
 
+  # this allows to set a certificate chain file in templates/ssl.conf
   ssl_certificate_chain_file: "no_chain"
-  
-  selinux_enabled: true

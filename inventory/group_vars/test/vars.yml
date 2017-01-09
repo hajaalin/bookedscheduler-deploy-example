@@ -4,5 +4,5 @@
   booked_db_password: "{{ vault_booked_db_password }}"
 
   booked_source: "git"
-  booked_source_git_repo: "https://github.com/UH-LMU/bookedscheduler.git"
+  booked_source_git_repo: "https://github.com/YOUR-ACCOUNT-HERE/bookedscheduler.git"
   booked_source_git_version: "test"
