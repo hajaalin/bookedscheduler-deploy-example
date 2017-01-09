@@ -12,8 +12,8 @@
     - debug: var=install_ssl_setup_role
 
   roles:
-  - { role: ssl-setup, when: install_ssl_setup_role, tags: ssl }
   - { role: geerlingguy.apache, tags: ssl }
+  - { role: jdauphant.ssl-certs, tags: ssl }
   - { role: geerlingguy.mysql, when: install_mysql }
   - geerlingguy.php
   - { role: bookedscheduler, tags: booked }
@@ -29,6 +29,8 @@
       selinux: state=enforcing policy=targeted
     - name: allow Apache to connect to MySQL
       command: setsebool -P httpd_can_network_connect_db 1
+    - name: allow Apache to read Booked install dir
+      command: chcon -R -t httpd_sys_content_t {{ booked_install_dir }}
     - name: allow Apache to compile template files
       command: chcon -R -t httpd_sys_rw_content_t {{ booked_install_dir }}/tpl_c/
     - name: allow Apache to write Booked log files

@@ -21,16 +21,18 @@
     - {
       servername: "{{ inventory_hostname }}",
       documentroot: "/var/www/html",
-      certificate_file: "{{ ssl_certificate_file }}",
-      certificate_key_file: "{{ ssl_certificate_key_file }}",
-      certificate_chain_file: "{{ ssl_certificate_chain_file }}"
+      certificate_file: "{{ ssl_certs_cert_path }}",
+      certificate_key_file: "{{ ssl_certs_privkey_path }}",
     }
 
   # use the default zip archive
   booked_source: "local_archive"
+  booked_source_local_archive: "~/Downloads/booked-2.6.4.zip"
 
   # read Booked from a local directory
-  # booked_source: "local_directory"
-  # booked_source_local_dir: "/home/hajaalin/GitHub/bookedscheduler/"
+  #booked_source: "local_directory"
+  #booked_source_local_dir: "/home/hajaalin/Software/Booked/2.6.3/booked/"
 
-  selinux_enabled: false
+  ssl_certificate_chain_file: "no_chain"
+  
+  selinux_enabled: true

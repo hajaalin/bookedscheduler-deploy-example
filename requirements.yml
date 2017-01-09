@@ -1,10 +1,11 @@
 - src: geerlingguy.apache
-  version: 1.6.0
+  version: 1.7.3
 - src: geerlingguy.mysql
-  version: 1.9.1
+  version: 2.4.0
 - src: geerlingguy.php
-  version: 1.8.2
-- src: https://github.com/hajaalin/ansible-bookedscheduler/archive/v2.5.19_0.2.tar.gz
+  version: 3.3.0
+- src: https://github.com/hajaalin/ansible-bookedscheduler/archive/v2.6.1_0.5.tar.gz
   name: bookedscheduler
-- src: https://github.com/hajaalin/ansible-ssl-setup/archive/v0.4.0.tar.gz
-  name: ssl-setup
+- src: jdauphant.ssl-certs
+  version: v1.2.5
+  
