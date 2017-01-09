@@ -2,6 +2,7 @@
   # secrets from vault.yml
   mysql_root_password: "{{ vault_mysql_root_password }}"
   booked_db_password: "{{ vault_booked_db_password }}"
+  booked_install_password: "{{ vault_booked_install_password }}"
 
   #
   # Apache2

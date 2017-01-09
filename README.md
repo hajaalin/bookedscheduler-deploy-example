@@ -21,34 +21,37 @@ Managing secrets
 
 [Ansible Vault](http://docs.ansible.com/ansible/playbooks_vault.html) is used to store database passwords.
 
-Create new vault password file.
+Create new vault password file. If you don't have openssl installed, see [alternatives](http://www.howtogeek.com/howto/30184/10-ways-to-generate-a-random-password-from-the-command-line/).
 ```
 mkdir ~/.ansible_vault_passes
-ansible-vault --new-vault-password-file=~/.ansible_vault_passes/bookedscheduler-deploy-example
+openssl rand -base64 32 > ~/.ansible_vault_passes/bookedscheduler-deploy-example
+chmod 0400 /home/hajaalin/GitHub/bookedscheduler-deploy-example/README.md
 ```
-Secrets are named with prefix `vault_`.
-```
-$ grep -r vault_
-inventory/group_vars/dev/vars.yml:  mysql_root_password: "{{ vault_mysql_root_password }}"
-inventory/group_vars/dev/vars.yml:  booked_db_password: "{{ vault_booked_db_password }}"
-inventory/group_vars/test/vars.yml:  mysql_root_password: "{{ vault_mysql_root_password }}"
-inventory/group_vars/test/vars.yml:  booked_db_password: "{{ vault_booked_db_password }}"
-```
-
 Best practice is to have `vars.yml` and `vault.yml` files in each subdirectory of group_vars.
-Edit `vault.yml` to contain the actual secrets.
+Edit `vault.yml` to define the actual secret variables. Use prefix `vault_`.
 ```
 $ cat inventory/group_vars/dev/vault.yml
 ---
   vault_mysql_root_password: "big_secret_here"
-  booked_db_password: "another_secret_here"
-  booked_install_password: "and_another_one_here"
+  vault_booked_db_password: "another_secret_here"
+  vault_booked_install_password: "and_another_one_here"
+```
+In `vars.yml`, the secrets are assigned to role variables.
+```
+$ head inventory/group_vars/dev/vars.yml
+---
+  # secrets from vault.yml
+  mysql_root_password: "{{ vault_mysql_root_password }}"
+  booked_db_password: "{{ vault_booked_db_password }}"
+  booked_install_password: "{{ vault_booked_install_password }}"
 ```
 Then encrypt the `vault.yml` files.
 ```
-ansible-vault encrypt --vault-password-file=~/.ansible_vault_passes/bookedscheduler-deploy-example group_vars/dev/vault.yml
-ansible-vault encrypt --vault-password-file=~/.ansible_vault_passes/bookedscheduler-deploy-example group_vars/test/vault.yml
+ansible-vault encrypt --vault-password-file=~/.ansible_vault_passes/bookedscheduler-deploy-example inventory/group_vars/dev/vault.yml
+ansible-vault encrypt --vault-password-file=~/.ansible_vault_passes/bookedscheduler-deploy-example inventory/group_vars/test/vault.yml
 ```
+If you don't like to store the vault password in plain text, you can create and store it e.g. in KeePassX,
+and use option `--ask-vault-pass` instead.
 
 Start test VM and install
 -------------------------
