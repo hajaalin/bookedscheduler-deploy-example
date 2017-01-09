@@ -6,6 +6,7 @@ Vagrant.configure('2') do |config|
   authorize_key_for_root config, '~/.ssh/id_dsa.pub', '~/.ssh/id_rsa.pub'
 
   config.vm.synced_folder ".", "/vagrant", disabled: true
+  config.ssh.insert_key = false
 
   {
     'booked'   => '192.168.39.11',
