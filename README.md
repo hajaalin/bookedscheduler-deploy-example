@@ -27,12 +27,6 @@ Managing secrets
 
 [Ansible Vault](http://docs.ansible.com/ansible/playbooks_vault.html) is used to store database passwords.
 
-Create new vault password file. If you don't have openssl installed, see [alternatives](http://www.howtogeek.com/howto/30184/10-ways-to-generate-a-random-password-from-the-command-line/).
-```
-mkdir ~/.ansible_vault_passes
-openssl rand -base64 32 > ~/.ansible_vault_passes/bookedscheduler-deploy-example
-chmod 0400 ~/.ansible_vault_passes/bookedscheduler-deploy-example
-```
 Best practice is to have `vars.yml` and `vault.yml` files in each subdirectory of group_vars.
 Edit `vault.yml` to define the actual secret variables. Use prefix `vault_`.
 ```
@@ -50,6 +44,12 @@ $ head inventory/group_vars/dev/vars.yml
   mysql_root_password: "{{ vault_mysql_root_password }}"
   booked_db_password: "{{ vault_booked_db_password }}"
   booked_install_password: "{{ vault_booked_install_password }}"
+```
+Create new vault password file. If you don't have openssl installed, see [alternatives](http://www.howtogeek.com/howto/30184/10-ways-to-generate-a-random-password-from-the-command-line/).
+```
+mkdir ~/.ansible_vault_passes
+openssl rand -base64 32 > ~/.ansible_vault_passes/bookedscheduler-deploy-example
+chmod 0400 ~/.ansible_vault_passes/bookedscheduler-deploy-example
 ```
 Then encrypt the `vault.yml` files.
 ```
