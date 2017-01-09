@@ -15,6 +15,13 @@ Download roles
 ansible-galaxy install -f -r requirements.yml -p ./roles
 ```
 
+Configuration files
+-------------
+- `vars/main.yml`
+- `inventory/group_vars/all`
+- `inventory/group_vars/dev/vars.yml`
+- `inventory/group_vars/test/vars.yml`
+
 Managing secrets
 ----------------
 

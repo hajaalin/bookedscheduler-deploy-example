@@ -13,7 +13,7 @@ Vagrant.configure('2') do |config|
   }.each do |short_name, ip|
     config.vm.define short_name do |host|
       host.vm.network 'private_network', ip: ip
-      host.vm.hostname = "#{short_name}.lmu.dev"
+      host.vm.hostname = "#{short_name}.our.dev"
       host.vm.synced_folder ".", "/home/vagrant/sync", disabled: true
     end
   end
