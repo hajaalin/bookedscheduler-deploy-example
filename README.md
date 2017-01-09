@@ -1,6 +1,8 @@
 # bookedscheduler-deploy-example
 
-This project shows how to use Ansible for setting up Booked Scheduler.
+This project shows how to install [Booked] (https://www.bookedscheduler.com) with Ansible
+ (see also https://github.com/hajaalin/ansible-role-bookedscheduler).
+The way to set up a test VM with Vagrant is copied from http://hakunin.com/six-ansible-practices.
 
 Managing secrets
 ----------------
