@@ -21,6 +21,13 @@ Configuration files
 - `inventory/group_vars/all`
 - `inventory/group_vars/dev/vars.yml`
 - `inventory/group_vars/test/vars.yml`
+At least you need to check that the source code is found.
+```
+# use the default zip archive
+booked_source: "local_archive"
+booked_source_local_archive: "~/Downloads/booked-2.6.4.zip"
+```
+
 
 Managing secrets
 ----------------
